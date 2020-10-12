@@ -62,3 +62,4 @@ end
 group :production do
   gem 'rails_12factor'
 end
+gem 'devise', '4.7.2'
