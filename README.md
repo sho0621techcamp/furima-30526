@@ -7,7 +7,6 @@
 | nickname               | string | null: false |
 | email                  | string | null: false |
 | password               | string | null: false |
-| password_confirmation  | string | null: false |
 | last_name_kanji        | string | null: false |
 | first_name_kanji       | string | null: false |
 | last_name_kana         | string | null: false |
@@ -24,19 +23,19 @@
 
 | Column             | Type           | Options                           |
 | ------------------ | -------------- | --------------------------------- |
-| item_name          | string         | null: false                       |
+| name               | string         | null: false                       |
 | text               | text           | null: false                       |
 | price              | integer        | null: false                       |
 | user               | references     | null: false, foreign_key: true    |
-| category_id        | integer        |                                   |
-| status_id          | integer        |                                   |
-| shipping_fee_id    | integer        |                                   |
-| shipping_region_id | integer        |                                   |
-| shipping_days_id   | integer        |                                   |
+| category_id        | integer        | null: false                       |
+| status_id          | integer        | null: false                       |
+| shipping_fee_id    | integer        | null: false                       |
+| shipping_region_id | integer        | null: false                       |
+| shipping_days_id   | integer        | null: false                       |
 
 
 ### Association
-- has_one    : item
+- has_one    : order
 - belongs_to : user
 
 ## Addresses テーブル
@@ -44,12 +43,12 @@
 | Column         | Type       | Options                        |
 | -------------- | ---------- | ------------------------------ |
 | post_code      | string     | null: false                    |
-| prefecture_id  | integer    |                                |
+| prefecture_id  | integer    | null: false                    |
 | city           | string     | null: false                    |
 | address        | string     | null: false                    |
 | building       | string     |                                |
 | phone_number   | string     | null: false                    |
-| item_id        | references | null: false, foreign_key:true  |
+| order_id       | references | null: false, foreign_key:true  |
 
 ### Association
 - belongs_to : order
