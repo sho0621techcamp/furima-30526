@@ -53,7 +53,7 @@
 ### Association
 - belongs_to : order
 
-## Order テーブル
+## Orders テーブル
 
 | Column       | Type       | Options                        |
 | ------------ | ---------- | ------------------------------ |
