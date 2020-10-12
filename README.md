@@ -1,24 +1,64 @@
-# README
+テーブル設計
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Users テーブル
 
-Things you may want to cover:
+| Column                 | Type   | Options     |
+| ---------------------- | ------ | ----------- |
+| nickname               | string | null: false |
+| email                  | string | null: false |
+| password               | string | null: false |
+| password_confirmation  | string | null: false |
+| last_name(kanji)       | string | null: false |
+| first_name(kanji)      | string | null: false |
+| last_name(kana)        | string | null: false |
+| first_name(kana)       | string | null: false |
+| birthday               | string | null: false |
 
-* Ruby version
 
-* System dependencies
+### Association
 
-* Configuration
+- has_many : items
+- has_many : orders
 
-* Database creation
+## Items テーブル
 
-* Database initialization
+| Column       | Type           | Options                           |
+| ------------ | -------------- | --------------------------------- |
+| item_name    | string         | null: false                       |
+| text         | text           | null: false                       |
+| price        | integer        | null: false                       |
+| user         | references     | null: false, foreign_key: true    |
+| category     |                |                                   |
+| status       |                |                                   |
 
-* How to run the test suite
+### Association
 
-* Services (job queues, cache servers, search engines, etc.)
+- belongs_to : user
+- has_one    : address
 
-* Deployment instructions
+## Address テーブル
 
-* ...
+| Column       | Type       | Options                        |
+| ------------ | ---------- | ------------------------------ |
+| post_code    | integer    | null: false                    |
+| prefecture   |            |                                |
+| city         | text       | null: false                    |
+| address      | string     | null: false                    |
+| building     | string     | null: false                    |
+| phone_number | string     | null: false                    |
+
+### Association
+
+- has_one : item
+- has_one : order
+
+## Order テーブル
+
+| Column       | Type       | Options                        |
+| ------------ | ---------- | ------------------------------ |
+| item         | references | null: false, foreign_key: true |
+| user         | references | null: false, foreign_key: true |
+
+### Association
+- belongs_to : user
+- has_one    : item
