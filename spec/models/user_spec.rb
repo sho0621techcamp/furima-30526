@@ -35,7 +35,7 @@ describe User do
       end
 
       it "emailに＠が含まれていないと登録できない" do
-        @user.email = "@"
+        @user.email = "hogehoge.com"
         @user.valid?
         expect(@user.errors.full_messages).to include("Email is invalid")
       end
@@ -57,6 +57,20 @@ describe User do
         @user.password_confirmation = ""
         @user.valid?
         expect(@user.errors.full_messages).to include("Password confirmation doesn't match Password")
+      end
+
+      it "passwordは半角数字のみでは登録できない" do
+        @user.password = "000000"
+        @user.password_confirmation = "000000"
+        @user.valid?
+        expect(@user.errors.full_messages).to include("Password is invalid")
+      end
+
+      it "passwordは半角英字のみでは登録できない" do
+        @user.password = "abcdefg"
+        @user.password_confirmation = "abcdefg"
+        @user.valid?
+        expect(@user.errors.full_messages).to include("Password is invalid")
       end
 
       it "名前の姓が空では登録できない" do
