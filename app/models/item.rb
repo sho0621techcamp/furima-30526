@@ -6,8 +6,18 @@ class Item < ApplicationRecord
   belongs_to_active_hash :shipping_region
   belongs_to_active_hash :shipping_day
 
-  validates :name,  presence: true
-  validates :text,  presence: true
-  validates :price, presence: true
+  validates :name,               presence: true
+  validates :text,               presence: true
+  validates :price,              presence: true
+  validates :user,               presence: true
+  validates :category_id,        presence: true
+  validates :status_id,          presence: true
+  validates :shipping_fee_id,    presence: true
+  validates :shipping_region_id, presence: true
+  validates :shipping_days_id,   presence: true
+
+  has_one :order
+  belongs_to :user
+  has_one_attached :image
 
 end
