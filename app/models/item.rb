@@ -7,15 +7,16 @@ class Item < ApplicationRecord
   belongs_to_active_hash :shipping_day
   
   validates :image,              presence: true
-  validates :name,               presence: true
-  validates :text,               presence: true
+  validates :name,               presence: true, length: {maximum: 40}
+  validates :text,               presence: true, length: {maximum: 1000}
 
-  VALID_PRICE_REGEX = /\A([1-9]\d*,)*[1-9]\d*\z/
-  validates :price,              presence: true, format: { with: VALID_PRICE_REGEX},
-  numericality: { 
-  only_integer: true,
+  with_options presence: true, 
+  format: {with: /\A([1-9]\d*,)*[1-9]\d*\z/,
+  numericality: {only_integer: true, 
   greater_than_or_equal_to: 300,
-  less_than_or_equal_to: 9999999 }
+  less_than_or_equal_to: 9999999 } do 
+  validates :price
+  end
   
   
   validates :user,               presence: true
