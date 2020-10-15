@@ -6,10 +6,10 @@ class User < ApplicationRecord
   validates :nickname,          presence: true
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-  validates :email, presence: true,format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }
+  validates :email, presence: true, format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }
 
   VALID_PASSWORD_REGEX = /\A(?=.*?[a-z])(?=.*?\d)[a-z\d]+\z/i
-  validates :password, presence: true,format: { with: VALID_PASSWORD_REGEX}
+  validates :password, presence: true, format: { with: VALID_PASSWORD_REGEX}
 
   with_options presence: true, format: { with: /\A[ぁ-んァ-ン一-龥]+\z/} do
   validates :last_name_kanji,   presence: true

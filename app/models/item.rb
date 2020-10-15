@@ -6,10 +6,18 @@ class Item < ApplicationRecord
   belongs_to_active_hash :shipping_region
   belongs_to_active_hash :shipping_day
   
-
+  validates :image,              presence: true
   validates :name,               presence: true
   validates :text,               presence: true
-  validates :price,              presence: true
+
+  VALID_PRICE_REGEX = /\A([1-9]\d*,)*[1-9]\d*\z/
+  validates :price,              presence: true, format: { with: VALID_PRICE_REGEX},
+  numericality: { 
+  only_integer: true,
+  greater_than_or_equal_to: 300,
+  less_than_or_equal_to: 9999999 }
+  
+  
   validates :user,               presence: true
   validates :category_id,        presence: true
   validates :status_id,          presence: true
@@ -28,6 +36,6 @@ class Item < ApplicationRecord
 
   has_one :order
   belongs_to :user
-  has_one_attached :image
+  has_many_attached :image
 
 end
