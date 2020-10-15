@@ -50,9 +50,9 @@ describe Item do
       end
 
       it '発送元の地域が ---だと出品できない' do
-        @item.shipping_region_id = 0
+        @item.shipping_region_id = 1
         @item.valid?
-        expect(@item.errors.full_messages).to include('Shipping region must be other than 0')
+        expect(@item.errors.full_messages).to include('Shipping region must be other than 1')
       end
 
       it '発送までの日数が ---だと出品できない' do
