@@ -15,7 +15,7 @@ class Item < ApplicationRecord
     validates :status_id
     validates :shipping_fee_id
     validates :shipping_region_id
-    validates :shipping_days_id
+    validates :shipping_day_id
   end
 
   VALID_PRICE_REGEX = /\A([1-9]\d*,)*[1-9]\d*\z/.freeze
@@ -30,7 +30,7 @@ class Item < ApplicationRecord
     validates :status_id
     validates :shipping_fee_id
     validates :shipping_region_id
-    validates :shipping_days_id
+    validates :shipping_day_id
   end
 
   has_one :order

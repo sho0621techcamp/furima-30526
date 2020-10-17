@@ -56,7 +56,7 @@ describe Item do
       end
 
       it '発送までの日数が ---だと出品できない' do
-        @item.shipping_days_id = 1
+        @item.shipping_day_id = 1
         @item.valid?
         expect(@item.errors.full_messages).to include('Shipping days must be other than 1')
       end
