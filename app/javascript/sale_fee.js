@@ -1,13 +1,15 @@
-window.addEventListener('input', () => {
-  const priceInput = document.getElementById("item-price");
-  priceInput.addEventListener('input', () => {
+if (document.URL.match( /new/ ) || document.URL.match( /edit/)) {
+  window.addEventListener("input", () => {
+    const priceInput = document.getElementById("item-price");
+    priceInput.addEventListener("input", () => {
     
-    const inputValue = priceInput.value
+      const inputValue = priceInput.value
 
-    const addTaxDom = document.getElementById("add-tax-price");
-    addTaxDom.innerHTML = Math.floor(inputValue * 0.1);
+      const addTaxDom = document.getElementById("add-tax-price");
+      addTaxDom.innerHTML = Math.floor(inputValue * 0.1);
 
-    const addProfitDom = document.getElementById("profit");
-    addProfitDom.innerHTML = Math.floor(inputValue - addTaxDom.innerHTML);
+      const addProfitDom = document.getElementById("profit");
+      addProfitDom.innerHTML = Math.floor(inputValue - addTaxDom.innerHTML);
+    });
   });
-});
+};
