@@ -1,22 +1,46 @@
 class OrdersController < ApplicationController
+  before_action :set_order, only: [:index, :create]
+  before_action :move_to_root, only: [:index]
   def index
-    @order = Order.new
-    @item = Item.find(params[:item_id])
+    @order_address = OrderAddress.new
   end
 
   def create
-    @order = Order.new(order_params)
-    if @order.valid?
-      @order.save
+    @order_address = OrderAddress.new(order_params)
+    
+    if @order_address.valid?
+      pay_item
+      @order_address.save
       redirect_to root_path
     else
-      render 'index'
+      render action: :index
     end
   end
 
   private
   
   def order_params
-    params.permit(:item_id, :user_id)
+    params.require(:order_address)
+    .permit(:post_code, :prefecture_id, :city, :address, :building, :phone_number)
+    .merge(item_id: params[:item_id], user_id: current_user.id, token: params[:token])
+  end
+
+  def pay_item
+    Payjp.api_key = "sk_test_2bbdc52c96e808aa168e38ec"
+    Payjp::Charge.create(
+      amount: @item.price,
+      card:   order_params[:token],
+      currency: 'jpy'
+    )
+  end
+
+  def set_order
+    @item = Item.find(params[:item_id])
+  end
+
+  def move_to_root
+    if user_signed_in? && current_user.id == @item.user_id
+      redirect_to root_path
+    end
   end
 end

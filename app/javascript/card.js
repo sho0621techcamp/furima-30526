@@ -1,4 +1,5 @@
 const pay = () => {
+  console.log("ok")
   Payjp.setPublicKey("pk_test_b3ff297506ad4f9c87c4f866");//Pay.jpテスト公開鍵
   const form = document.getElementById("charge-form");
   form.addEventListener("submit", (e) => {
@@ -8,18 +9,19 @@ const pay = () => {
     const formData = new FormData(formResult);
 
     const card = {
-      number: formData.get("number"),
-      exp_month: formData.get("exp_month"),
-      exp_year: `20${formData.get("exp_year")}`,
-      cvc: formData.get("cvc"),
+      number: formData.get("order_address[number]"),
+      exp_month: formData.get("order_address[exp_month]"),
+      exp_year: `20${formData.get("order_address[exp_year]")}`,
+      cvc: formData.get("order_address[cvc]"),
     };
-
+    console.log(card);
     Payjp.createToken(card, (status, response) => {
+      console.log(status)
       if (status == 200) {
         const token = response.id;
         const renderDom = document.getElementById("charge-form");
-        const token0dj = `<input value=${token} type="hidden" name='token'>`;
-        renderDom.insertAdjacentHTML("beforeEnd", token0dj);
+        const tokenObj = `<input value=${token} type="hidden" name='token'>`;
+        renderDom.insertAdjacentHTML("beforeEnd", tokenObj);
       }
       document.getElementById("card-number").removeAttribute("name");
       document.getElementById("card-exp-month").removeAttribute("name");
