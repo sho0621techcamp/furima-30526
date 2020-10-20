@@ -1,6 +1,7 @@
 class OrdersController < ApplicationController
   before_action :set_order, only: [:index, :create]
   before_action :move_to_root, only: [:index]
+  before_action :authenticate_user!, only:[:index]
   def index
     @order_address = OrderAddress.new
   end
@@ -26,7 +27,7 @@ class OrdersController < ApplicationController
   end
 
   def pay_item
-    Payjp.api_key = "sk_test_2bbdc52c96e808aa168e38ec"
+    Payjp.api_key = ENV["PAYJP_SECRET_KEY"]
     Payjp::Charge.create(
       amount: @item.price,
       card:   order_params[:token],
@@ -40,6 +41,9 @@ class OrdersController < ApplicationController
 
   def move_to_root
     if user_signed_in? && current_user.id == @item.user_id
+      redirect_to root_path
+    
+    elsif @item.order != nil
       redirect_to root_path
     end
   end
