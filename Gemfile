@@ -65,7 +65,8 @@ group :development do
   gem 'binding_of_caller'
 end
 group :production do
-  gem 'rails_12factor'
+  # gem 'rails_12factor'
+  gem 'unicorn', '5.4.1'
 end
 gem 'devise', '4.7.2'
 gem 'active_hash'
