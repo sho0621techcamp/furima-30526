@@ -3,34 +3,39 @@ version: '3'
 
 # コンテナの情報
 services:
-  db:
-    image: mysql:5.7
-    environment:
-      MYSQL_ROOT_PASSWORD: 'password'
-    ports:
+    db:
+      image: mysql:5.7
+      environment:
+        MYSQL_ROOT_PASSWORD: 'password'
+      ports:
       - "4306:3306"
-      
+
   # コンテナ名(webが一般的？)
-  web:
-    # Dockerfileを元にbuildする
-    build:
+    web:
+       # Dockerfileを元にbuildする
+      build: 
       # Dockerfileの配置ディレクトリ
-      context: .
+          context: .
       # imageのビルドに用いるDockerfileの指定
-      dockerfile: Dockerfile
+          dockerfile: Dockerfile
 
-    # 環境変数の設定
-    # RAILS_ENVにdevelopmentを指定で、実行モードを開発モードに
-    environment:
-      RAILS_ENV: development
+      # 環境変数の設定
+      # RAILS_ENVにdevelopmentを指定で、実行モードを開発モードに
+      environment:
+        RAILS_ENV: development
 
-    # コンテナ起動時に実行するコマンド
-    # pid情報の削除とRailsサーバー起動
-    command: /bin/sh -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+      # コンテナ起動時に実行するコマンド
+      # pid情報の削除とRailsサーバー起動
+      command: /bin/sh -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
 
-    # 既存のRailsプロジェクトをマウントする
-    volumes:
-      - .:/qiita_test
-    # コンテナの3000ポートとlocalhostの3000ポートをマッピング
-    ports:
+      # 既存のRailsプロジェクトをマウントする
+      volumes:
+      - .:/furima-30526
+      # コンテナの3000ポートとlocalhostの3000ポートをマッピング
+      ports:
       - "3000:3000"
+      depends_on: 
+      - db
+      env_file: 
+      - aws.env
+      - payjp.env

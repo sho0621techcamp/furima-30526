@@ -11,21 +11,21 @@ apt-get install -y yarn nodejs --no-install-recommends && \
 rm -rf /var/lib/apt/lists/*
 
 # プロジェクトのディレクトリをコンテナに作成
-RUN mkdir /qiita_test
+RUN mkdir /furima-30526
 
 # 作業ディレクトリに↑で作成したディレクトリを指定
-WORKDIR /qiita_test
+WORKDIR /furima-30526
 
 # Gemfileを作業ディレクトリにコピー
-ADD Gemfile /qiita_test/Gemfile
-ADD Gemfile.lock /qiita_test/Gemfile.lock
+ADD Gemfile /furima-30526/Gemfile
+ADD Gemfile.lock /furima-30526/Gemfile.lock
 
 # gemのインストール
 RUN gem install bundler
 RUN bundle install
 
 # プロジェクト本体をコンテナにコピー
-ADD . /qiita_test
+ADD . /furima-30526
 
 # コンテナ起動時にRailsサーバーが起動するようにする
 CMD ["rails", "server", "-b", "0.0.0.0"]
