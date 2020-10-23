@@ -22,7 +22,12 @@ services:
       # 環境変数の設定
       # RAILS_ENVにdevelopmentを指定で、実行モードを開発モードに
       environment:
+        AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+        AWS_SECRET_KEY: ${AWS_SECRET_KEY}
+        PAYJP_SECRET_KEY: ${PAYJP_SECRET_KEY}
+        PAYJP_PUBLIC_KEY: ${PAYJP_PUBLIC_KEY}
         RAILS_ENV: development
+        
 
       # コンテナ起動時に実行するコマンド
       # pid情報の削除とRailsサーバー起動
@@ -36,6 +41,3 @@ services:
       - "3000:3000"
       depends_on: 
       - db
-      env_file: 
-      - aws.env
-      - payjp.env
