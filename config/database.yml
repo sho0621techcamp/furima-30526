@@ -55,7 +55,6 @@ production:
   username: root
   password:
   socket: /tmp/mysql.sock
-exit
   database: furima_30526_production
   username: root
   password: <%= ENV['DATABASE_PASSWORD'] %>
