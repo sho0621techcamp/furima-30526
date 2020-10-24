@@ -3,7 +3,7 @@ lock '3.14.1'
 
 # Capistranoのログの表示に利用する
 set :application, 'furima-30526'
-
+set :deploy_to, '/var/www/furima-30526'
 # どのリポジトリからアプリをpullするかを指定する
 set :repo_url,  'git@github.com:sho0621techcamp/furima-30526.git'
 
