@@ -1,28 +1,23 @@
-# docker-composeのバージョン
 version: '3'
-
-# コンテナの情報
 services:
-    db:
-      image: mysql:5.6
-      environment:
-        MYSQL_ROOT_PASSWORD: password
-        MYSQL_DATABASE: root
-      ports:
-      - "4306:3306"
-
-  # コンテナ名(webが一般的？)
-    web:
-       # Dockerfileを元にbuildする
-      build: 
-      # Dockerfileの配置ディレクトリ
-          context: .
-      # imageのビルドに用いるDockerfileの指定
-          dockerfile: Dockerfile
-
-      # 環境変数の設定
-      # RAILS_ENVにdevelopmentを指定で、実行モードを開発モードに
-      environment:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: dockerize -wait tcp://db:3306 -timeout 20s bundle exec unicorn -p 3000 -c /furima-30526/config/unicorn.conf.rb 
+    tty: true #pry-byebugを使えるようにする
+    stdin_open: true
+    depends_on:
+      - db 
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/furima-30526:cached 
+      #ソケット通信用ファイルをnginxコンテナと共有
+      - tmp-data:/furima-30526/tmp/sockets
+      #画像データとかをnginxと共有
+      - public-data:/furima-30526/public
+    environment:
         AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
         AWS_SECRET_KEY: ${AWS_SECRET_KEY}
         PAYJP_SECRET_KEY: ${PAYJP_SECRET_KEY}
@@ -30,18 +25,34 @@ services:
         RAILS_ENV: development
         SECRET_KEY_BASE: ${SECRET_KEY_BASE}
         DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+  db:
+    image: mysql:5.6
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+    ports: 
+      - '4306:3306'
+    environment:
+      MYSQL_DATABASE: docker_development
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: root
+      MYSQL_PASSWORD: password
+    #dbのデータを永続化しておく
+    volumes:
+      - mysql-data:/var/lib/mysql
 
-      # コンテナ起動時に実行するコマンド
-      # pid情報の削除とRailsサーバー起動
-      command: /bin/sh -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+    restart: always #明示的にstopさせるまでリスタートする。（失敗するたび遅延あり）
+    volumes:
+      - tmp-data:/furima-30526/tmp/sockets
+      - public-data:/furima-30526/public
+    depends_on:
+      - web 
 
-      # 既存のRailsプロジェクトをマウントする
-      volumes:
-      - .:/furima-30526
-      # コンテナの3000ポートとlocalhostの3000ポートをマッピング
-      ports:
-      - "3000:3000"
-      depends_on: 
-      - db
-      links:
-      - db
+volumes:
+  public-data:
+  tmp-data:
+  mysql-data:
