@@ -1,14 +1,23 @@
 # Rubyのバージョン
 FROM ruby:2.6.5
-
+#dockerizeパッケージダウンロード用環境変数
+ENV DOCKERIZE_VERSION v0.6.1
 # curl -sS でエラー以外の出力の抑制
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
 && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 
-# yarn node.jsのインストール(apt-get -yでyes/noを聞かれないようにする必要がある)
+#パッケージの取得
 RUN apt-get update && \
-apt-get install -y yarn nodejs --no-install-recommends && \
-rm -rf /var/lib/apt/lists/*
+    apt-get install -y --no-install-recommends\
+    nodejs  \
+    mariadb-client  \
+    build-essential  \
+    wget \
+    && wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # プロジェクトのディレクトリをコンテナに作成
 RUN mkdir /furima-30526

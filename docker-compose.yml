@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: dockerize -wait tcp://db:3306 -timeout 20s bundle exec unicorn -p 3000 -c /furima-30526/config/unicorn.conf.rb 
+    command: dockerize -wait tcp://db:4306 -timeout 20s bundle exec unicorn -p 3000 -c /furima-30526/config/unicorn.conf.rb 
     tty: true #pry-byebugを使えるようにする
     stdin_open: true
     depends_on:
