@@ -143,7 +143,19 @@
 .comment-box {
   width: 40vw;
   background-color: #fff;
+  padding: 20px;
   margin: 5vh 0;
+  text-align: center;
+}
+
+.comments {
+  font-size: 20px;
+  width: 100%;
+  background-color: #fff;
+  height: 7vh;
+  padding: 30px;
+  margin: 10% 0;
+  border: solid 2px #dedede;
   text-align: center;
 }
 
