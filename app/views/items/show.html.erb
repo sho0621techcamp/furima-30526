@@ -84,7 +84,7 @@
     <h4>＜コメント＞</h4>
     <div class="comments" id="comments">
         <% @comments.reverse_each do |comment| %>
-          <p><%= comment.content %></p>
+        <p class="comment-content"><%= comment.content %></p>
         <% end %>
     </div>   
     <%= form_with model: [@item, @comment] do |f| %>
